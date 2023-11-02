@@ -9,23 +9,28 @@ let petData
 var handleRequest = function (req, res) {
     if(req.url !== undefined) {
         const urlArray = formatURL(req);
-        console.log(urlArray)
         const petIndex = Number(urlArray[2]); 
-        console.log(petIndex)
         let fileData = fs.readFileSync(dbPath, 'utf8')
         petData = JSON.parse(fileData)
         if(urlArray[1] === "pets" && urlArray.length < 3){
+            res.writeHead(200, {'content-type': 'application/json'})
             res.end(JSON.stringify(petData))
         } else if( urlArray[1] === "pets" && petIndex !== undefined ){
             if(urlArray[1] === "pets" && petIndex < 0) {
-                res.end("Index must not be negative!")
+                res.writeHead(404, {'content-type': 'text/plain'})
+                res.end("Not Found");
             } else if(urlArray[1] === "pets" && petIndex > petData.length){
-                res.end("You went way too high, mister.")
+                res.writeHead(404, {'content-type': 'text/plain'})
+                res.end("Not Found");
             } 
-        }
+        } else {
+            res.writeHead(200, {'content-type': 'application/json'})
             res.end(JSON.stringify(petData[petIndex]))
+        }
+        res.end(JSON.stringify(petData[petIndex]))
     } else {
-        res.end("404, no such route");
+        res.writeHead(404, {'content-type': 'text/plain'})
+        res.end("Not Found");
     }
 };
 
