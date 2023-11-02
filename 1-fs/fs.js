@@ -15,7 +15,7 @@ if(subcommand === "read") {
 if(subcommand === "create"){
     create();
 }
-// **************************************************FUNCTION TO READ ***************************************
+// **************************************************FUNCTION TO READ***************************************
 function read() {
     let index = parseInt(process.argv[3])
     fs.readFile('../pets.json', 'utf8', function(error, data){
@@ -33,7 +33,7 @@ function read() {
         }
     })
 }
-// **************************************************FUNCTION TO CREATE **************************************
+// **************************************************FUNCTION TO CREATE**************************************
 function create() {
     if (process.argv.length === 6) {
         fs.readFile('../pets.json', 'utf8', function (error, data) {

@@ -1,22 +1,35 @@
 import http from 'http'
 import url from 'url'
 import fs from 'fs'
-
-const dbPath = '../pets.json';
+let res;
+const dbPath = './pets.json';
 // import routes from './routes.js'
-
+let petData 
 
 var handleRequest = function (req, res) {
     if(req.url !== undefined) {
         const urlArray = formatURL(req);
-        requestCommand(urlArray, res)
-
+        console.log(urlArray)
+        const petIndex = Number(urlArray[2]); 
+        console.log(petIndex)
+        let fileData = fs.readFileSync(dbPath, 'utf8')
+        petData = JSON.parse(fileData)
+        if(urlArray[1] === "pets" && urlArray.length < 3){
+            res.end(JSON.stringify(petData))
+        } else if( urlArray[1] === "pets" && petIndex !== undefined ){
+            if(urlArray[1] === "pets" && petIndex < 0) {
+                res.end("Index must not be negative!")
+            } else if(urlArray[1] === "pets" && petIndex > petData.length){
+                res.end("You went way too high, mister.")
+            } 
+        }
+            res.end(JSON.stringify(petData[petIndex]))
     } else {
         res.end("404, no such route");
     }
 };
 
-var server = http.createServer(handleRequest);
+var server = http.createServer(handleRequest, res);
 server.listen(8000, function() {
     console.log("Listening... on localhost:8000")
 })
@@ -29,41 +42,66 @@ function formatURL(req){
 
 
 
-function displayPets(){
-    fs.readFile(dbPath, 'utf8', function(error, data){
-        if (error) {
-            throw error;
-        } else {
-            const jsData = JSON.parse(data);
-            return JSON.parse(data);
-        }
-    })
-}
 
-function displayPetsAtIndex(index){
-    fs.readFile(dbPath, 'utf8', function(error, data){
-        if(error){
-            console.log(error)
-        } else {
-            if (!index){
-                console.log(JSON.parse(data))
-                console.log("It thinks it's not here")
-            } else if(typeof index === 'number' && index < JSON.parse(data).length ){
-                console.log(JSON.parse(data)[index])
-            } else {
-                console.log("Usage: node fs.js read INDEX")
-            }
-        }
-    })
-}
 
-function requestCommand(arr, res){
-    console.log(JSON.stringify(arr))
-    if(arr[i] !== 'pets'){
-        res.end("Incorrect Path")
-    } else if (arr.length > 2){
-        displayPetsAtIndex(Number(arr[2]))
-    } else {
-        displayPets()
-    }
-}
+
+
+
+
+// function displayPets(res){
+//     fs.readFile(dbPath, 'utf8', function(error, data){
+//         if (error) {
+//             throw error;
+//         } else {
+//             const jsData = JSON.parse(data);
+//             return JSON.parse(data);
+//         }
+//     })
+// }
+
+// function displayPetsAtIndex(index, res){
+//     fs.readFile(dbPath, 'utf8', function(error, data){
+//         if(error){
+//             console.log(error)
+//             console.log("Error Reading Data")
+//         } else {
+//             if (!index){
+//                 // console.log(JSON.parse(data))
+//                 let petString = JSON.parse(data)
+//                 // console.log(data)
+//                 console.log(JSON.stringify(petString))
+//                 const petStringTwo = JSON.stringify(petString)
+//                 res.end(petStringTwo)
+//                 // console.log(petString)
+//                 // console.log(petData[0])
+//                 // console.log("It thinks it's not here")
+//             } else if((typeof index === 'number' && index < JSON.parse(data).length && index > 0)){
+//                 console.log("Here")
+//                 return JSON.parse(data)[index]
+//             } else if(index < 0) {
+//                 console.log("Array index must be positive")
+//                 res.end("Not Found")
+//                 return "Not Found"
+//             } else {
+//                 console.log("Not Found")
+//             }
+//         }
+
+//     })
+// }
+
+// function requestCommand(arr, res){
+//     const index = Number(arr[2])
+//     // console.log(JSON.stringify(arr))
+//     if(arr[1] !== 'pets'){
+//         res.end("Incorrect Path")
+//     } else {
+//         displayPetsAtIndex(index, res)
+//         // const pets = petData[0]
+//         // console.log(pets)
+//         // const petString = JSON.stringify(pets)
+//         // console.log("stringify", petString)
+//         // return petString
+//     } 
+// }
+
