@@ -5,18 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Chrome",
+            "name": "Launch via NPM",
             "request": "launch",
-            "type": "chrome",
-            "url": "http://localhost:8080",
-            "webRoot": "E:\Galvanize Stuff\projects\fs-pet-shop\3-express\express.js"
-        },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "runtimeArgs": [
+                "run-script",
+                "debug"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
         }
+
+    
     ]
 }
