@@ -10,7 +10,7 @@ let petData
 
 app.use(express.json())
 
-//*************************************** Routes  */
+//*************************************** Routes  
 app.use('/', (req, res, next) => {
     next({message: "The path you are looking for does not exist", status: 404})
 })
@@ -56,7 +56,6 @@ function checkIndexRange(index, res){
         res.send(404, 'Not Found')
     }
     console.log("Inside check range", petData[index])
-
 }
 
 async function getPets(){
@@ -66,8 +65,7 @@ async function getPets(){
         return petData
     } catch(error) {
         res.send(error)
-    }
-    
+    } 
 }
 
 async function writePets(obj){
