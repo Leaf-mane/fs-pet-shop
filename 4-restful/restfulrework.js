@@ -4,15 +4,15 @@ import dotenv from 'dotenv'
 import chalk from 'chalk'
 
 dotenv.config()
-const port = process.env.PORT || 5432
+const port = process.env.PORT || 3000
 
 const { Pool } = pg
 const pool = new Pool({
-    user: 'tester',
+    user: 'testuser',
     host: 'localhost',
-    database: 'pets',
+    database: 'restfulpetdb',
     port: 5432,
-    password: 'tester'
+    password: '123',
   });
 
 const app = express();
@@ -103,7 +103,9 @@ app.patch("/pets/:petIndex?", update);
 const send404 = (req, res) => {
   res.status(404).send("404 Error - Page Not Found");
 };
+
 app.use(send404);
+
 const start = () => {
   app.listen(port, () => {
     console.log(chalk.bold.green(`Server is running on port ${port}`));
