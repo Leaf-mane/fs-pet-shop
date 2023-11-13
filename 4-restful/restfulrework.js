@@ -18,9 +18,11 @@ const pool = new Pool({
 
 const app = express();
 app.use(express.json());
+app.use(express.static('public'));
 
 const create = async (req, res) => {
   const pet = req.body;
+
   if ([pet.age, pet.kind, pet.name].includes(undefined)) {
     res.status(400).send('Bad Request.');
   } else {
@@ -39,6 +41,7 @@ const create = async (req, res) => {
 app.post("/pets", create);
 const read = async (req, res) => {
   const { petIndex } = req.params;
+
   if (petIndex === undefined) {
     try {
       const query = 'SELECT * FROM pets';
@@ -50,6 +53,7 @@ const read = async (req, res) => {
     }
   } else {
     const index = parseInt(petIndex);
+
     if (index >= 0) {
       try {
         const query = 'SELECT * FROM pets WHERE id = $1';
